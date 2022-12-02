@@ -1,16 +1,18 @@
 <script>
     import { toast } from "@zerodevx/svelte-toast"
 
-    let fname = ""
-    let lname = ""
-    let email = ""
-    let description = ""
+    let fname = "Tobias"
+    let lname = "Vinther"
+    let email = "mail@mail.com"
+    let description = "Snake-like"
 
-    async function sendEmail() {
-        const response = await fetch("http://localhost:8080/api/contact", {
+    async function submitApplication() {
+        const response = await fetch("http://localhost:8080/api/applications", {
             method: "POST",
             body: JSON.stringify({
-                name: fname,
+                firstName: fname,
+                lastName: lname,
+                email: email,
                 text: description,
             }),
             headers: {
@@ -19,18 +21,18 @@
                 "Access-Control-Allow-Origin": "*",
             },
         })
-
-        const unpackedResult = await response.json()
-        fname = "";
-        description = "";
-        toast.push("Application sent", {
+        if(response.status === 200) {
+            toast.push("Application sent", {
             theme: {
                 "--toastColor": "black",
                 "--toastBackground": "rgb(110, 238, 93)",
             }
         })
+        } else {
+            console.log("Application not sent")
+        }
+        
 
-        console.log("Email link:", unpackedResult.Link)
     }
 </script>
 
@@ -54,7 +56,7 @@
     <label for="description">Description</label><br>
     <textarea rows="15" cols="80" bind:value={description} placeholder="Describe your silly walk" /><br>
 
-    <button type="submit" on:click|preventDefault={sendEmail}> Submit </button>
+    <button type="submit" on:click|preventDefault={submitApplication}> Submit </button>
 </form>
 
 

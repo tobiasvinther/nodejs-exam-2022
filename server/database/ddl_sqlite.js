@@ -24,7 +24,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS applications (
     last_name VARCHAR(255),
     email VARCHAR (255),
     description VARCHAR (65535),
-    approved BOOLEAN NOT NULL DEFAULT 0
+    status VARCHAR(12) NOT NULL DEFAULT "pending"
 );
 `);
 

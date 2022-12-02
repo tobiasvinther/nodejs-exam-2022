@@ -38,7 +38,7 @@
 <ul>
     {#each applicationList as application}
     <li>
-      <a href="">{application.creation_date} {application.first_name} {application.last_name}</a>  
+      <a href="">{application.creation_date} {application.first_name} {application.last_name} {application.status}</a>  
     </li>
     {/each}
 </ul>

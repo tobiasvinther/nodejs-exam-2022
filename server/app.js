@@ -60,6 +60,9 @@ app.use("/api/signin", authRateLimiter)
 import usersRouter from "./routers/usersRouter.js"
 app.use(usersRouter);
 
+import applicationRouter from "./routers/applicationRouter.js"
+app.use(applicationRouter)
+
 import contactRouter from "./routers/contactRouter.js"
 app.use(contactRouter)
 
