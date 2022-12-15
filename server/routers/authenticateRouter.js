@@ -6,10 +6,10 @@ const router = Router()
 router.get("/api/authenticate", async (req, res) => {
 
     if(!req.session.isLoggedIn) {
-        console.log("You are NOT allowed")
+        //console.log("You are NOT allowed")
         res.sendStatus(401)
     } else {
-        console.log("You are allowed")
+        //console.log("You are allowed")
         //res.sendStatus(200)
         /*
         res.send({text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -18,7 +18,7 @@ router.get("/api/authenticate", async (req, res) => {
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum`})
         */
         const result = await db.all("SELECT * FROM applications;")
-        console.log(result)
+        //console.log(result)
         //res.send({text: result.creation_date + " " + result.first_name + " " + result.last_name})
         //res.send({applications: result})
         res.send(result)

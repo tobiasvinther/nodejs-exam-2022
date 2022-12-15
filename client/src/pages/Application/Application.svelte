@@ -1,5 +1,6 @@
 <script>
     import { toast } from "@zerodevx/svelte-toast"
+    import {navigate} from "svelte-navigator"
 
     let fname = "Tobias"
     let lname = "Vinther"
@@ -16,18 +17,19 @@
                 text: description,
             }),
             headers: {
-                "Content-type": "application/json",
+                "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Access-Control-Allow-Origin": "*",
             },
         })
         if(response.status === 200) {
             toast.push("Application sent", {
-            theme: {
-                "--toastColor": "black",
-                "--toastBackground": "rgb(110, 238, 93)",
-            }
-        })
+                theme: {
+                    "--toastColor": "black",
+                    "--toastBackground": "rgb(110, 238, 93)",
+                } 
+            })
+        navigate("/", { replace: false });
         } else {
             console.log("Application not sent")
         }
@@ -41,7 +43,6 @@
 <p>Put in the required details below to apply for a government grant to develop your silly walk. Please note that only walks that are deemed to already be relatively silly and thus has
     the potential to be developed into a particularly silly walk, will be eligible for a grant. If approved, the size of the grant will be determined by the ministry based on a number of factors.
 </p>
-<br>
 
 <form>
     <label for="fname">First name</label><br>

@@ -28,10 +28,10 @@ export {loggedInUsers}
 
 function isAuth (req, res, next) {
 	if(req.session?.isLoggedIn) {
-		console.log("isAuth = true")
+		//console.log("isAuth = true")
 		next()
 	} else {
-		console.log("isAuth = false")
+		//console.log("isAuth = false")
 		next()
 	}
 }

@@ -10,6 +10,7 @@
             method: "POST",
             body: JSON.stringify({
                 name: name,
+                email: email,
                 text: text,
             }),
             headers: {
@@ -44,7 +45,6 @@
 <h2>Contact</h2>
 <hr>
 <p>Inquires for the Ministry of Silly Walks.</p>
-<br>
 
 <form>
     <label for="fname">Name</label><br>

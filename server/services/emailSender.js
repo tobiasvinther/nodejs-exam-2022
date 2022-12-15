@@ -23,7 +23,7 @@ export async function sendMail(sender, textBody, name) {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: sender, // sender address
-    to: "contact@humansociety.com", // list of receivers
+    to: "contact@mosw.com", // list of receivers
     subject: "Message from " + name, // Subject line
     text: textBody, // plain text body
     html: `<b>${textBody}</b>`, // html body

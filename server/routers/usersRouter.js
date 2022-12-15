@@ -51,7 +51,7 @@ router.post("/api/login", async (req, res) => {
             }
 
         }
-        console.log("Signin route session id", req.session.id)
+        //console.log("Signin route session id", req.session.id)
 
     } catch {
         console.error()

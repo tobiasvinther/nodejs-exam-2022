@@ -54,7 +54,7 @@
 
             console.log("Login successful")
             SHOW_LOGIN.set(false)
-            navigate("/", { replace: false }); 
+            navigate("/admin", { replace: false }); 
          
         } else {
             console.log("Email or password field is empty")

@@ -10,6 +10,8 @@
   import Application from "./pages/Application/Application.svelte"
   import Information from "./pages/Information/Information.svelte"
 
+  import Review from "./pages/Review/Review.svelte"
+
 
   async function logOut() {
     await fetch("http://localhost:8080/api/logout", {
@@ -69,6 +71,7 @@
       <Route path="/contact" primary={false}><Contact /></Route>
       <Route path="/application" primary={false}><Application /></Route>
       <Route path="/information" primary={false}><Information /></Route>
+      <Route path="/review/:id" primary={false}><Review /></Route>
   </div>
 </Router>
 
