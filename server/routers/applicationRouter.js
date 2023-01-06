@@ -3,6 +3,15 @@ import db from "../database/connection_sqlite.js"
 
 const router = Router()
 
+router.get("/api/applications/get/:id", async (req, res) => {
+    const id = req.params.id
+    if(!id) {
+        res.sendStatus(404)
+    }
+    const user = await db.get(`SELECT * FROM applications WHERE id = (?)`, id)
+    console.log("Send single user", user)
+    res.send(user)
+})
 
 //POST - add new application
 router.post("/api/applications", async (req, res) => {

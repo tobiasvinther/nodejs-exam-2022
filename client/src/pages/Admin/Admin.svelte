@@ -3,14 +3,17 @@
     import { navigate } from "svelte-navigator"
     import { toast } from '@zerodevx/svelte-toast'
     import { Link } from "svelte-navigator"
-
+    import { select_option } from "svelte/internal";
 
     let allowed = false
     let applicationList = []
+    let originalApplicationList = []
 
-    let filterStatus = ""
+    let filterStatus = "all"
 
     onMount(async () => {
+        reloadApplicationList()
+        /*
         const response = await fetch("http://localhost:8080/api/authenticate", {
             method: "GET",
             credentials: "include",    
@@ -25,9 +28,11 @@
             applicationList = responsePromise
             //applicationList = Object.entries(applicationList);
             applicationList = Object.values(responsePromise);
+            originalApplicationList = applicationList
             //console.log(applicationList)
             //console.log(typeof(applicationList))
         }
+        */
 	})
 
     async function reloadApplicationList() {
@@ -45,6 +50,7 @@
             applicationList = responsePromise
             //applicationList = Object.entries(applicationList);
             applicationList = Object.values(responsePromise);
+            originalApplicationList = applicationList
             //console.log(applicationList)
             //console.log(typeof(applicationList))
         }
@@ -94,7 +100,7 @@
             reloadApplicationList()
             return
         } 
-        //reloadApplicationList()
+        applicationList = originalApplicationList
         applicationList = applicationList.filter(application => application.status === status)
         //applicationList = applicationList.map(application => application.status === status)
         console.log(status)
