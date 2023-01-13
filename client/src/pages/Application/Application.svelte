@@ -5,9 +5,21 @@
     let fname = "Tobias"
     let lname = "Vinther"
     let email = "mail@mail.com"
-    let description = "Snake-like"
+    let description = "I lay on the floor and wriggle myself forward, like a snake. I'm not sure if it can even be considered a walk, or it should be classified as a 'slither'."
+    let amount = 10000
 
     async function submitApplication() {
+        const authenticateResponse = await fetch("http://localhost:8080/api/authenticate1", {
+            method: "GET",
+            credentials: "include",    
+        })
+
+        console.log(authenticateResponse.status)
+        if(authenticateResponse.status === 200) {
+            toast.push("Employees cannot apply for grants")
+            return
+        }
+
         const response = await fetch("http://localhost:8080/api/applications", {
             method: "POST",
             body: JSON.stringify({
@@ -15,6 +27,7 @@
                 lastName: lname,
                 email: email,
                 text: description,
+                amount: amount
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -32,8 +45,7 @@
         navigate("/", { replace: false });
         } else {
             console.log("Application not sent")
-        }
-        
+        }      
 
     }
 </script>
@@ -56,6 +68,9 @@
 
     <label for="description">Description</label><br>
     <textarea rows="15" cols="80" bind:value={description} placeholder="Describe your silly walk" /><br>
+
+    <label for="amount">Amount</label><br>
+    £<input type="number" id="amount" name="amount" bind:value={amount} style="margin-left: 4px;"><br>
 
     <button type="submit" on:click|preventDefault={submitApplication}> Submit </button>
 </form>

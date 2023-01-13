@@ -1,15 +1,17 @@
 <script>
     import { onMount } from "svelte"
     import { navigate } from "svelte-navigator"
-    import { toast } from '@zerodevx/svelte-toast'
+    import { toast } from "@zerodevx/svelte-toast"
     import { Link } from "svelte-navigator"
-    import { select_option } from "svelte/internal";
+    import { io } from "socket.io-client"
+
+    const socket = io("http://127.0.0.1:8080")
 
     let allowed = false
     let applicationList = []
     let originalApplicationList = []
-
     let filterStatus = "all"
+    let message = ""
 
     onMount(async () => {
         reloadApplicationList()
@@ -57,7 +59,7 @@
 	}
 
     async function updateApplicationStatus(id, status) {
-        const response = await fetch(`http://localhost:8080/api/applications/update/${id}`, {
+        const response = await fetch(`http://localhost:8080/api/applications/${id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 status: status
@@ -74,8 +76,7 @@
             theme: {
                 "--toastColor": "black",
                 "--toastBackground": "rgb(110, 238, 93)",
-            }
-            
+            }         
         })
         } else {
             console.log("Something went wrong")
@@ -83,7 +84,7 @@
     }
     
     async function deleteApplication(id) {
-        const response = await fetch(`http://localhost:8080/api/applications/delete/${id}`, {
+        const response = await fetch(`http://localhost:8080/api/applications/${id}`, {
             method: "DELETE",
         })
         if(response.status !== 200) {
@@ -102,14 +103,17 @@
         } 
         applicationList = originalApplicationList
         applicationList = applicationList.filter(application => application.status === status)
-        //applicationList = applicationList.map(application => application.status === status)
-        console.log(status)
-        console.log(applicationList)
-        
+        //console.log(status)
+        //console.log(applicationList)       
     }
 
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function broadcastMessage() {
+        //console.log("Broadcasted message:", message)
+        socket.emit("newMessage", {data: message})
     }
 </script>
 
@@ -118,10 +122,10 @@
 <h2>List of applications</h2>
 <hr>
 
-<p><i>Only employees are allowed to access this page.</i></p>
+<p><i>Only employees are allowed to access this page. If you somehow accessed this site without being an employee, kindly turn yourself in at the nearest police station.</i></p>
 
-<p>Filter</p>
-<select bind:value={filterStatus} on:change={() => filterTable(filterStatus)} >
+<span>Filter</span>
+<select class="filterSelect" bind:value={filterStatus} on:change={() => filterTable(filterStatus)} >
     <option value="all">All</option>
     <option value="pending">Pending</option>
     <option value="approved">Approved</option>
@@ -133,6 +137,7 @@
       <th>Id</th>
       <th>Date</th>
       <th>Name</th>
+      <th>Amount</th>
       <th>Status</th>
       <th></th>
     </tr>
@@ -141,6 +146,7 @@
       <td>{application.id}</td>
       <td>{application.creation_date}</td>
       <td>{application.first_name} {application.last_name}</td>
+      <td>£{application.amount}</td>
       <td>{capitalizeFirstLetter(application.status)}
         {#if application.status === "approved"}
             <span class="dot" style="background-color: limegreen;"></span>
@@ -162,14 +168,43 @@
 </table>
 {/if}
 
+<br>
+<span>
+    <p>Broadcast a message to all online users</p>
+    <input type="text" id="message" name="message" bind:value={message} >
+    <button style="float: none;" on:click={broadcastMessage}>Send</button>
+</span>
+
 
 <style>
-    select {
+    .filterSelect {
         width: 130px;
         height: 30px;
         font-size: 16px;
         border: 1px solid #dddddd;
         margin-bottom: 11px;
+    }
+    .amountSelect {
+        width: 160px;
+        height: 30px;
+        border: 1px solid #dddddd;
+        font-family: 'Tahoma', sans-serif;
+        font-size: 15px;
+    }
+    input {
+        width: 400px;
+        height: 35px;
+        font-size: 16px;
+        border: 1px solid #dddddd;
+        margin-bottom: 11px;
+        margin-right: 4px;
+    }
+    .inputAmount {
+        font-size: 15px;
+        margin: 0px;
+        width: 200px;
+        margin-left: 4px;
+
     }
     .link-review {
         color: black;

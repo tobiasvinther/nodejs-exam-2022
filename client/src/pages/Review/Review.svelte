@@ -3,12 +3,24 @@
     import { useParams } from "svelte-navigator";
     import { onMount } from "svelte";
     import { toast } from '@zerodevx/svelte-toast'
+    import { navigate } from "svelte-navigator"
 
     let user = {}
 	const params = useParams();
 
     onMount(async () => {
-        const response = await fetch("http://localhost:8080/api/applications/get/"+ $params.id, {
+
+        const authenticateResponse = await fetch("http://localhost:8080/api/authenticate", {
+            method: "GET",
+            credentials: "include",    
+        })
+
+        if(authenticateResponse.status === 401) {
+            toast.push("Log in to see this page")
+            navigate("/login", { replace: false })
+        } 
+	
+        const response = await fetch("http://localhost:8080/api/applications/"+ $params.id, {
             method: "GET",
             credentials: "include",    
         })
@@ -18,7 +30,7 @@
 	)
 
     async function updateUser(id, status) {
-        const response = await fetch("http://localhost:8080/api/applications/get/"+ $params.id, {
+        const response = await fetch("http://localhost:8080/api/applications/"+ $params.id, {
             method: "GET",
             credentials: "include",    
         })
@@ -28,7 +40,7 @@
 	
 
     async function updateApplicationStatus(id, status) {
-        const response = await fetch(`http://localhost:8080/api/applications/update/${id}`, {
+        const response = await fetch(`http://localhost:8080/api/applications/${id}`, {
             method: "PATCH",
             body: JSON.stringify({
                 status: status
@@ -71,6 +83,9 @@
 
     <label for="description">Description</label><br>
     <textarea rows="15" cols="80" value={user.description} disabled/><br>
+
+    <label for="amount">Amount</label><br>
+    <input type="number" id="amount" name="amount" value={user.amount} disabled><br>
 </form>
 
 <Link to={"/admin"}><button>Back</button></Link>

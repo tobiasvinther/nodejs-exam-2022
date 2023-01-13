@@ -1,6 +1,7 @@
 <script>
 	import { Router, Link, Route } from "svelte-navigator"
   import { SvelteToast, toast } from '@zerodevx/svelte-toast'
+  import { io } from "socket.io-client"
   import { SHOW_LOGIN } from "./store/globals.js"
   
   import Home from "./pages/Home/Home.svelte"
@@ -9,9 +10,8 @@
   import Contact from "./pages/Contact/Contact.svelte"
   import Application from "./pages/Application/Application.svelte"
   import Information from "./pages/Information/Information.svelte"
-
   import Review from "./pages/Review/Review.svelte"
-
+  import Budget from "./pages/Budget/budget.svelte"
 
   async function logOut() {
     await fetch("http://localhost:8080/api/logout", {
@@ -20,6 +20,13 @@
       toast.push("Logged out")
       SHOW_LOGIN.set(true)
   }
+
+  const socket = io("http://127.0.0.1:8080")
+
+  //when a message from the admin is recieved from the backend, display a toast
+  socket.on("messageFromAdmin", (data) => {
+    toast.push(data.data, { duration: 6000 })
+    })
 </script>
 
 <Router>
@@ -49,6 +56,9 @@
         <Link to="/admin">Admin</Link>
       </span>
       <span class="link-item">
+        <Link to="/budget">Budget</Link>
+      </span>
+      <span class="link-item">
         <span class="login">
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <Link to=""on:click={logOut}>Log out</Link>
@@ -59,7 +69,7 @@
   </nav>
 
   <div class="title">
-    <Link to="/"><img src="https://www.kindpng.com/picc/m/446-4467798_ministry-of-silly-walking-ministry-of-silly-walks.png" alt="Ministry Of Silly Walking - Ministry Of Silly Walks Logo, HD Png" width="64" class="logo"></Link>
+    <Link to="/"><img src="https://www.kindpng.com/picc/m/446-4467798_ministry-of-silly-walking-ministry-of-silly-walks.png" alt="Ministry Of Silly Walks - Ministry Of Silly Walks Logo, HD Png" width="64" class="logo"></Link>
     <h2>The Ministry of Silly Walks</h2>
   </div>
   <hr>
@@ -72,6 +82,7 @@
       <Route path="/application" primary={false}><Application /></Route>
       <Route path="/information" primary={false}><Information /></Route>
       <Route path="/review/:id" primary={false}><Review /></Route>
+      <Route path="/budget" primary={false}><Budget /></Route>
   </div>
 </Router>
 

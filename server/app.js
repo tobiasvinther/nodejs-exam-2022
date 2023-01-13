@@ -18,13 +18,31 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-		secure: false,
-	 } 
+    cookie: { secure: false } 
   }))
 
 let loggedInUsers = {loggedIn: []}
 export {loggedInUsers}
+
+//socket stuff
+import http from "http"
+import { Server } from "socket.io"
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+      }
+})
+//server.listen(5173, () =>("Socket listening on 5173"))
+io.on("connection", (socket) => {
+	//console.log(`A socket connected on id ${socket.id}`);
+	socket.on("newMessage", (data) => {
+		console.log(data)
+		io.emit("messageFromAdmin",data)
+	})
+})
+
 
 function isAuth (req, res, next) {
 	if(req.session?.isLoggedIn) {
@@ -49,7 +67,7 @@ app.use(generalRateLimiter)
 
 const authRateLimiter = rateLimit({
 	windowMs: 1 * 60 * 1000,
-	max: 3, 
+	max: 3, //max three tries per minute
 	standardHeaders: true,
 	legacyHeaders: false, 
 })
@@ -71,4 +89,4 @@ app.use(authenticateRouter)
 
 
 const PORT = 8080 || process.env.PORT
-app.listen(PORT, () => console.log("Server is running on port", PORT))
+server.listen(PORT, () => console.log("Server is running on port", PORT))
