@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount } from "svelte"
     import { toast } from "@zerodevx/svelte-toast"
     import { navigate } from "svelte-navigator"
 
@@ -66,7 +66,6 @@
 
 <style>
     table {
-        /*font-family: arial, sans-serif;*/
         border-collapse: collapse;
         width: 100%;
     }
@@ -75,10 +74,4 @@
         text-align: left;
         padding: 8px;
     }
-    .calc {
-        float: right;
-        
-        font-weight: bold;
-    }
-  
 </style>

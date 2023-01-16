@@ -27,6 +27,7 @@ export {loggedInUsers}
 //socket stuff
 import http from "http"
 import { Server } from "socket.io"
+
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
@@ -34,26 +35,22 @@ const io = new Server(server, {
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
       }
 })
-//server.listen(5173, () =>("Socket listening on 5173"))
+
 io.on("connection", (socket) => {
-	//console.log(`A socket connected on id ${socket.id}`);
 	socket.on("newMessage", (data) => {
 		console.log(data)
 		io.emit("messageFromAdmin",data)
 	})
 })
 
-
 function isAuth (req, res, next) {
-	if(req.session?.isLoggedIn) {
-		//console.log("isAuth = true")
-		next()
+	if(!req.session.isLoggedIn) {
+		res.sendStatus(401)
 	} else {
-		//console.log("isAuth = false")
 		next()
 	}
 }
-app.use(isAuth)
+//app.use("/api/applications/:id", isAuth)
 
 //rækkefølge på rateLimits er vigtig. Hvis general ligger sidst vil den override de foregående fx
 const generalRateLimiter = rateLimit({
@@ -86,6 +83,7 @@ app.use(contactRouter)
 
 import authenticateRouter from "./routers/authenticateRouter.js"
 app.use(authenticateRouter)
+
 
 
 const PORT = 8080 || process.env.PORT

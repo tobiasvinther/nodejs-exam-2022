@@ -6,6 +6,16 @@
     let text = ""
 
     async function sendEmail() {
+        const authenticateResponse = await fetch("http://localhost:8080/api/authenticate1", {
+            method: "GET",
+            credentials: "include",    
+        })
+
+        if(authenticateResponse.status === 200) {
+            toast.push("Employees cannot send enquiries")
+            return
+        }
+
         const response = await fetch("http://localhost:8080/api/contact", {
             method: "POST",
             body: JSON.stringify({
@@ -32,12 +42,6 @@
 
         console.log("Email link:", unpackedResult.Link)
 
-        /*
-        if (window.confirm('Click ok to view email in a new tab'))
-            {
-            window.open(unpackedResult.Link, '_blank')
-            };
-        */
     }
 </script>
 
@@ -59,17 +63,6 @@
     <button type="submit" on:click|preventDefault={sendEmail}> Submit </button>
 </form>
 
-<!--
-<label>
-    Name <input type="text" name="name" bind:value={name} />
-</label>
-
-<br />
-<textarea rows="18" cols="36" bind:value={text} />
-<br /><br />
-
-<button type="submit" on:click|preventDefault={sendEmail}> SUBMIT </button>
--->
 
 <style>
     textarea,

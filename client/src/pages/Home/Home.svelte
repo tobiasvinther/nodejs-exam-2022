@@ -44,8 +44,6 @@
 <style>
     .container {
         display: flex;
-        /*align-items: center;*/
-        
         position: relative;
         text-align: center;
     }
@@ -62,31 +60,10 @@
         bottom: 8px;
         left: 30%;
     }
-    /*
-    .text-box:before {
-        content: '';
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-    }
-    */
     img {
         display: block;
         max-width: 100%;
         height: auto;
         object-fit: cover;
     }
-    /*
-    b {
-        box-shadow: inset 0 0 0 0 #ffffff;
-        color: #ffffff;
-        margin: 0 -.25rem;
-        padding: 0 .25rem;
-        transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
-    }
-    b:hover {
-        box-shadow: inset 420px 0 0 0 #ffffff;
-        color: rgb(0, 0, 0);
-    }
-    */
 </style>

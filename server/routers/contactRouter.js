@@ -4,8 +4,6 @@ import { sendMail } from "../services/emailSender.js"
 const router = Router()
 
 router.post("/api/contact", async (req, res) => {
-    //console.log(req.body)
-    //console.log("Logged in", req.session.loggedIn)
     let sender = req.body.email
     let textBody = req.body.text
     let name = req.body.name

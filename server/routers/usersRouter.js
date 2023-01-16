@@ -1,8 +1,8 @@
 import { Router } from "express"
-const router = Router()
-
 import db from "../database/connection_sqlite.js"
 import bcrypt from "bcrypt"
+
+const router = Router()
 
 //GET - log out
 router.get('/api/logout', (req, res) => { 
@@ -11,7 +11,7 @@ router.get('/api/logout', (req, res) => {
     res.sendStatus(200)
 })
 
-//POST - sign up new user (not finished and implemented on frontend)
+//POST - sign up new user (not finished or implemented on frontend)
 router.post("/api/users", async (req, res) => {
     const username = req.body.username
     const email = req.body.email
@@ -51,7 +51,6 @@ router.post("/api/login", async (req, res) => {
             }
 
         }
-        //console.log("Signin route session id", req.session.id)
 
     } catch {
         console.error()

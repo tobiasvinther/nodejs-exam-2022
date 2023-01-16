@@ -15,26 +15,6 @@
 
     onMount(async () => {
         reloadApplicationList()
-        /*
-        const response = await fetch("http://localhost:8080/api/authenticate", {
-            method: "GET",
-            credentials: "include",    
-        })
-
-        if(response.status === 401) {
-            toast.push("Log in to see this page")
-            navigate("/login", { replace: false })
-        } else {
-            allowed = true
-            let responsePromise = await response.json()
-            applicationList = responsePromise
-            //applicationList = Object.entries(applicationList);
-            applicationList = Object.values(responsePromise);
-            originalApplicationList = applicationList
-            //console.log(applicationList)
-            //console.log(typeof(applicationList))
-        }
-        */
 	})
 
     async function reloadApplicationList() {
@@ -50,11 +30,8 @@
             allowed = true
             let responsePromise = await response.json()
             applicationList = responsePromise
-            //applicationList = Object.entries(applicationList);
             applicationList = Object.values(responsePromise);
             originalApplicationList = applicationList
-            //console.log(applicationList)
-            //console.log(typeof(applicationList))
         }
 	}
 
@@ -102,9 +79,7 @@
             return
         } 
         applicationList = originalApplicationList
-        applicationList = applicationList.filter(application => application.status === status)
-        //console.log(status)
-        //console.log(applicationList)       
+        applicationList = applicationList.filter(application => application.status === status)   
     }
 
     function capitalizeFirstLetter(string) {
@@ -112,7 +87,6 @@
     }
 
     function broadcastMessage() {
-        //console.log("Broadcasted message:", message)
         socket.emit("newMessage", {data: message})
     }
 </script>
@@ -184,13 +158,6 @@
         border: 1px solid #dddddd;
         margin-bottom: 11px;
     }
-    .amountSelect {
-        width: 160px;
-        height: 30px;
-        border: 1px solid #dddddd;
-        font-family: 'Tahoma', sans-serif;
-        font-size: 15px;
-    }
     input {
         width: 400px;
         height: 35px;
@@ -199,26 +166,7 @@
         margin-bottom: 11px;
         margin-right: 4px;
     }
-    .inputAmount {
-        font-size: 15px;
-        margin: 0px;
-        width: 200px;
-        margin-left: 4px;
-
-    }
-    .link-review {
-        color: black;
-    }
-    ul {
-        list-style: none;        
-        padding-left: 0%;
-        margin-top: 30px;
-    }
-    li {
-        margin-bottom: 3px;
-    }
     table {
-        /*font-family: arial, sans-serif;*/
         border-collapse: collapse;
         width: 100%;
     }
@@ -226,9 +174,6 @@
         border: 1px solid #dddddd;
         text-align: left;
         padding: 8px;
-    }
-    tr:nth-child(even) {
-        /*background-color: #dddddd;*/
     }
     button {
         float: right;
@@ -266,6 +211,5 @@
         background-color: #bbb;
         border-radius: 50%;
         float: right;
-    }
-    
+    }    
 </style>

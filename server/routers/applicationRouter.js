@@ -10,7 +10,6 @@ router.get("/api/applications/:id", async (req, res) => {
         res.sendStatus(404)
     }
     const user = await db.get(`SELECT * FROM applications WHERE id = (?)`, id)
-    //console.log("Send single user", user)
     res.send(user)
 })
 
@@ -20,7 +19,6 @@ router.get("/api/approved", async (req, res) => {
     if(!req.session.isLoggedIn) {
         res.sendStatus(401)
     } else {
-    
         const result = await db.all(`SELECT * FROM applications WHERE status = (?)`, "approved")
         res.send(result)
     }
@@ -44,14 +42,8 @@ router.patch("/api/applications/:id", async (req, res) => {
     if(!id) {
         res.sendStatus(404)
     }
-    await db.run(`UPDATE applications SET status = (?) WHERE id = (?)`, [status, id])
 
-    /*
-    if(req.body.amount) {
-        const amount = req.body.amount
-        await db.run(`UPDATE applications SET amount = (?) WHERE id = (?)`, [amount, id])
-    }
-    */
+    await db.run(`UPDATE applications SET status = (?) WHERE id = (?)`, [status, id])
     res.sendStatus(200)
 })
 

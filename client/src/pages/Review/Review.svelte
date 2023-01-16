@@ -10,6 +10,7 @@
 
     onMount(async () => {
 
+        
         const authenticateResponse = await fetch("http://localhost:8080/api/authenticate", {
             method: "GET",
             credentials: "include",    
@@ -19,11 +20,13 @@
             toast.push("Log in to see this page")
             navigate("/login", { replace: false })
         } 
+        
 	
         const response = await fetch("http://localhost:8080/api/applications/"+ $params.id, {
             method: "GET",
             credentials: "include",    
         })
+
             let responsePromise = await response.json()
             user = responsePromise
         }
